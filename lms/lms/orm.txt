@@ -1,0 +1,45 @@
+CRUD WITH ORM
+---Insert a Record
+
+Courses.objects.create(title='software testing',description='jkhkllj',
+                       image='photo.jpg',instructor='priya',
+                        category='IT & software',level='Beginner',
+                        fee=30000,offer_fee=28000)
+
+
+orm query for fetch all Record
+
+Courses.objects.all()
+
+orm query for fetch record with id--5
+
+Courses.objects.get(id=5)
+
+orm query for fetch all beginner level Courses
+
+Courses.objects.filter(level='Beginner')
+
+orm query for fetch all courses with price 35000
+
+Courses.objects.filter(fee=35000)
+
+orm query for fetch all courses with price less than or equal to 50000
+
+Courses.objects.filter(fee__ite=50000)
+
+orm query for fetch all courses other tha level =beginner
+
+Courses.objects.filter().exclude(level='beginner')
+
+courses---search query
+
+Courses.objects.filter(Q(title__icontains=query) |
+
+                       Q(instructor__icontains=query) |
+
+                       Q(category__icontains=query) )
+
+
+filter beginner level courses and intermediate courses
+
+Courses.objects.filter(level='beginner'| level='intermediate)
