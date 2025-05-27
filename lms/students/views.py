@@ -7,6 +7,10 @@ from .forms import ProfileForm , StudentForm
 
 from django.contrib.auth.hashers import make_password
 
+from django.db import transaction
+
+from lms.utility import send_email
+
 class StudentRegisterView(View):
 
     def get(self,request,*args,**kwargs):
@@ -33,33 +37,43 @@ class StudentRegisterView(View):
 
         if profile_form.is_valid():
 
-            profile = profile_form.save(commit=False)
+            with transaction.atomic():
 
-            email = profile_form.cleaned_data.get('email')
+                profile = profile_form.save(commit=False)
 
-            password = profile_form.cleaned_data.get('password')
+                email = profile_form.cleaned_data.get('email')
 
-            profile.username = email
+                password = profile_form.cleaned_data.get('password')
 
-            profile.role = 'Student'
+                profile.username = email
 
-            profile.password = make_password(password)
+                profile.role = 'Student'
 
-            profile.save()
+                profile.password = make_password(password)
 
-            if student_form.is_valid():
+                profile.save()
 
-                student = student_form.save(commit=False)
+                if student_form.is_valid():
 
-                student.profile = profile
+                    student = student_form.save(commit=False)
 
-                student.name = f'{profile.first_name} {profile.last_name}'
+                    student.profile = profile
 
-                
+                    student.name = f'{profile.first_name} {profile.last_name}'
 
-                student.save()
+                    student.save()
 
-                return redirect('login')
+                    subject = 'Successfully Registedre'
+
+                    recipient = student.profile.email
+
+                    template = 'email/success-registertion.html'
+
+                    context = {'name': student.name,'username':student.profile.email,'password':password }
+
+                    send_email(subject,recipient,template,context)
+
+                    return redirect('login')
             
         data = {'profile_form' : profile_form, 'student_form': student_form}
 
