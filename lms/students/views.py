@@ -11,6 +11,8 @@ from django.db import transaction
 
 from lms.utility import send_email
 
+import threading
+
 class StudentRegisterView(View):
 
     def get(self,request,*args,**kwargs):
@@ -63,7 +65,7 @@ class StudentRegisterView(View):
 
                     student.save()
 
-                    subject = 'Successfully Registedre'
+                    subject = 'Successfully Registered'
 
                     recipient = student.profile.email
 
@@ -71,7 +73,10 @@ class StudentRegisterView(View):
 
                     context = {'name': student.name,'username':student.profile.email,'password':password }
 
-                    send_email(subject,recipient,template,context)
+                    thread = threading.Thread(target=send_email,args=(subject,recipient,template,context))
+
+                    # send_email(subject,recipient,template,context)
+                    thread.start()
 
                     return redirect('login')
             
