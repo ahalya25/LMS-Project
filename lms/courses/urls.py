@@ -6,6 +6,8 @@ urlpatterns=[
 
     path('courses-list/',views.CoursesListView.as_view(),name='courses-list'),
 
+    path('course-detail/<str:uuid>/',views.CoursesDetailView.as_view(),name='course-detail'),
+
     path('home/',views.HomeView.as_view(),name='home'),
 
     path('instructor-courses-list/',views.InstructorcourseListView.as_view(),name='instructor-courses-list'),
@@ -16,5 +18,7 @@ urlpatterns=[
 
     path('instructor-courses-delete/<str:uuid>/',views.InstructorCourseDeleteView.as_view(),name='instructor-courses-delete'),
 
-    path('instructor-courses-update/<str:uuid>/',views.InstructorCourseUpdateView.as_view(),name='instructor-courses-update')
+    path('instructor-courses-update/<str:uuid>/',views.InstructorCourseUpdateView.as_view(),name='instructor-courses-update'),
+
+   
 ]
