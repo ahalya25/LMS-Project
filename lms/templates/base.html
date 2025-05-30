@@ -106,9 +106,12 @@
                 {% if user.is_authenticated %}
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link " data-bs-toggle="dropdown">
-   
+                        
+                        {% get_image request as photo %}
+                        {% if photo %}
                         <div class="d-flex align-items-center">
-                        <img src="" alt="" style="width: 30px; height: 30px; border-radius:50%;"alt="">
+                        <img src="{{photo.url}}" style="width: 30px; height: 30px; border-radius:50%;"alt="">
+                        {% endif %}
                         <p class="text-secondary ms-1">{{user}}</p>
                         </div>
                     </a>

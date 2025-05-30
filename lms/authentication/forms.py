@@ -2,14 +2,14 @@ from django import forms
 
 class LoginForm(forms.Form): # checking
 
-    username = forms.CharField(max_length=25,widget=forms.TextInput(attrs={
+    username = forms.CharField(max_length=50,widget=forms.TextInput(attrs={
 
                                                                          'class':'form-control',
                                                                         'required' : 'required'
                                                                         }))
     
 
-    password = forms.CharField(max_length=25,widget=forms.PasswordInput(attrs={
+    password = forms.CharField(max_length=50,widget=forms.PasswordInput(attrs={
                                                                         
                                                                         'class':'form-control',
                                                                         'required' : 'required'
