@@ -28,7 +28,8 @@
             </ul>
 
             <div class="mt-4 text-center">
-              <button class="btn btn-success btn-lg">Pay Now</button>
+              <button class="btn btn-success btn-lg"><a href="{% url 'razorpay-view' payment.course.uuid %}"> Pay Now</a>
+               </button>
             </div>
           </div>
           <div class="card-footer text-muted text-center">
