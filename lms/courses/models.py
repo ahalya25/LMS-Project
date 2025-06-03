@@ -2,16 +2,7 @@ from django.db import models
 
 import uuid
 
-# from instructors.models import Instructors
 
-# Create your models here.
-
-# category_choice = [
-
-#     ('IT & software','IT & software'),
-#     ('Finance','Finance'),
-#     ('Marketing','Marketing')
-# ]
 
 class BaseClass(models.Model):
 
@@ -70,6 +61,8 @@ class Courses(BaseClass):
     level = models.CharField(max_length=25,choices=LevelChoices.choices)
 
     type = models.CharField(max_length=15,choices=TypeChoices.choices)
+
+    tags = models.TextField()
 
     fee = models.DecimalField(max_digits=8,decimal_places=2)
 

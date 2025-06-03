@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 
 from django.views import View
 
@@ -11,6 +11,8 @@ from students.models import Students
 from .models import Transactions
 
 import razorpay
+
+import datetime
 
 from decouple import config
 
@@ -59,4 +61,61 @@ class RazorpayView(View):
 
         data = {'client_id' : config("RZP_CLIENT_ID"), 'rzp_order_id' : rzp_order_id ,'amount' : payment.amount*100}
 
-        return render(request,'payments/payment-page.html',context=data)        
+        return render(request,'payments/payment-page.html',context=data)      
+
+class PaymentverifyView(View):
+
+    def post(self,request,*args,**kwargs):
+
+        # print(request.POST)
+
+        rzp_order_id = request.POST.get('razorpay_order_id')
+
+        rzp_payment_id = request.POST.get('razorpay_payment_id')
+
+        rzp_payment_signature = request.POST.get('razorpay_signature')
+
+        client = razorpay.Client(auth=(config("RZP_CLIENT_ID"), config("RZP_CLIENT_SECRET")))
+
+        transaction = Transactions.objects.get(rzp_order_id = rzp_order_id) 
+
+        time_now = datetime.datetime.now()
+
+        transaction.rzp_payment_id = rzp_payment_id
+
+        transaction.rzp_payment_signature = rzp_payment_signature
+
+        try:
+            
+            client.utility.verify_payment_signature({
+                                                
+                                                'razorpay_order_id': rzp_order_id,
+                                                'razorpay_payment_id': rzp_payment_id,
+                                                'razorpay_signature': rzp_payment_signature
+                                                })
+            
+           
+            transaction.status= 'Success'
+
+            transaction.save()
+
+            transaction.payment.status = 'Success'
+
+            transaction.payment.paid_at = time_now
+
+            transaction.payment.save()
+
+            return redirect('home')     
+            
+        except :    
+
+            transaction.status= 'Failed'
+
+            transaction.payment.save()
+            
+            transaction.save()
+
+            return redirect('razorpay-view',uuid=transaction.payment.course.uuid)
+            
+
+         
