@@ -59,7 +59,7 @@ class CoursesDetailView(View):
 
         recommended_courses = get_recommended_courses(course)
 
-        data = {'course' : course }
+        data = {'course' : course ,'recommended_courses' : recommended_courses}
 
         return render(request,'courses/course-detail.html',context=data)     
     

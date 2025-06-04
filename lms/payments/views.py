@@ -64,6 +64,7 @@ class RazorpayView(View):
         return render(request,'payments/payment-page.html',context=data)      
 
 class PaymentverifyView(View):
+       #checking for transaction is correct or not
 
     def post(self,request,*args,**kwargs):
 

@@ -26,12 +26,13 @@ def send_email(subject,recipient,template,context):
 #function to get recommended courses
 def get_recommended_courses(course)  :
 
-
+    #data preprocessing 3   ORM Query
     data = pd.DataFrame(Courses.objects.all().values('id','title', 'description','type','category','tags','level','instructor__name','instructor__area_of_expertise__area'))
-
+     #taken by one field
     data['all_fields'] = data['description']+' '+data['type']+' '+data['category']+' '+data['tags']+' '+data['level']+' '+data['instructor__name']+' '+data['instructor__area_of_expertise__area']
     
     data.drop(columns=['description','type','category','tags','level','instructor__name','instructor__area_of_expertise__area'],inplace=True)
+    # print(data)
 
     tfidf_vectorizer = TfidfVectorizer(max_features=200, stop_words='english')
 
