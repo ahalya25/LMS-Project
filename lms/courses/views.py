@@ -131,12 +131,6 @@ class CourseCreateView(View):
 
         if form.is_valid():
 
-            # print(form.cleaned_data)
-
-            # form.cleaned_data['instructor'] = 'Jhon Doe'
-
-            # form.save()
-
             course = form.save(commit=False)
 
             # Course.instructor = 'Jhon Doe'
